@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		143D68611DBEED1D00594824 /* MCMainTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 143D68601DBEED1D00594824 /* MCMainTextView.m */; };
 		14B8C8CE1D391DFD009AFCAE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 14B8C8CD1D391DFD009AFCAE /* main.m */; };
 		14B8C8D11D391DFD009AFCAE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 14B8C8D01D391DFD009AFCAE /* AppDelegate.m */; };
 		14B8C8D41D391DFD009AFCAE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14B8C8D31D391DFD009AFCAE /* ViewController.m */; };
@@ -35,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		143D685F1DBEED1D00594824 /* MCMainTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCMainTextView.h; sourceTree = "<group>"; };
+		143D68601DBEED1D00594824 /* MCMainTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCMainTextView.m; sourceTree = "<group>"; };
 		14B8C8C91D391DFD009AFCAE /* calc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = calc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		14B8C8CD1D391DFD009AFCAE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		14B8C8CF1D391DFD009AFCAE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -78,6 +81,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		145B24101DBB6086007EA734 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				143D685F1DBEED1D00594824 /* MCMainTextView.h */,
+				143D68601DBEED1D00594824 /* MCMainTextView.m */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
 		14B8C8C01D391DFD009AFCAE = {
 			isa = PBXGroup;
 			children = (
@@ -101,6 +113,7 @@
 		14B8C8CB1D391DFD009AFCAE /* calc */ = {
 			isa = PBXGroup;
 			children = (
+				145B24101DBB6086007EA734 /* views */,
 				14B8C8CF1D391DFD009AFCAE /* AppDelegate.h */,
 				14B8C8D01D391DFD009AFCAE /* AppDelegate.m */,
 				14B8C8D21D391DFD009AFCAE /* ViewController.h */,
@@ -270,6 +283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				143D68611DBEED1D00594824 /* MCMainTextView.m in Sources */,
 				14B8C8D41D391DFD009AFCAE /* ViewController.m in Sources */,
 				14B8C8D11D391DFD009AFCAE /* AppDelegate.m in Sources */,
 				14B8C8CE1D391DFD009AFCAE /* main.m in Sources */,
@@ -498,6 +512,7 @@
 				14B8C8F81D391DFE009AFCAE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		14B8C8F91D391DFE009AFCAE /* Build configuration list for PBXNativeTarget "calcTests" */ = {
 			isa = XCConfigurationList;
@@ -506,6 +521,7 @@
 				14B8C8FB1D391DFE009AFCAE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		14B8C8FC1D391DFE009AFCAE /* Build configuration list for PBXNativeTarget "calcUITests" */ = {
 			isa = XCConfigurationList;
@@ -514,6 +530,7 @@
 				14B8C8FE1D391DFE009AFCAE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
