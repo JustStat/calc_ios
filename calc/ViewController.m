@@ -7,24 +7,10 @@
 //
 
 #import "ViewController.h"
+#import "Calculator.h"
 #import "math.h"
 
 static NSInteger const kMaxResultTextLengh = 11;
-typedef enum : NSUInteger {
-    MCInitState,
-    MCReadFirstNumberState,
-    MCReadOperationState,
-    MCReadSecondNumberState,
-    MCDoneCalculation
-} MCCalcState;
-
-typedef enum {
-    MCNoOperation,
-    MCPlusOperation,
-    MCMinusOperation,
-    MCMultOperation,
-    MCDivOperation
-} MCCalcOperations;
 
 @interface ViewController ()
 
@@ -34,87 +20,20 @@ typedef enum {
 @end
 
 @implementation ViewController {
-    MCCalcState calcState;
-    MCCalcOperations currentOperation;
-    double a;
-    double b;
-    double currentCalculation;
-    double memoryValue;
     UIButton *currentOperationButton;
+    Calculator *calc;
 }
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    calc = [[Calculator alloc] init];
     [self.calcTextField becomeFirstResponder];
-    [self setInitState];
+    [calc setInitState];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-}
-
-- (void)setInitState {
-    a = 0;
-    b = 0;
-    calcState = MCInitState;
-    currentOperation = MCNoOperation;
-    currentCalculation = 0;
-}
-
-- (void)actCalculation {
-    switch (calcState) {
-        case MCReadSecondNumberState:
-            b = [self.calcTextField.text doubleValue];
-            break;
-        case MCDoneCalculation: {
-            a = currentCalculation;
-            break;
-        }
-        case MCReadFirstNumberState: {
-            a = [self.calcTextField.text doubleValue];
-            break;
-        }
-        case MCReadOperationState: {
-            b = [self.calcTextField.text doubleValue];
-            break;
-        }
-        default:
-            return;
-    }
-    
-    switch (currentOperation) {
-        case MCPlusOperation:
-            currentCalculation = a + b;
-            break;
-        case MCMinusOperation: {
-            currentCalculation = a - b;
-            break;
-        }
-        case MCMultOperation: {
-            currentCalculation = a * b;
-            break;
-        }
-        case MCDivOperation: {
-            if (b != 0) {
-                currentCalculation = a / b;
-            } else {
-                [self.calcTextField setText:@"Ошибка"];
-                return;
-            }
-            break;
-        }
-        default:
-            currentCalculation = a;
-            return;
-    }
-    if (fabs(currentCalculation) > DBL_MAX) {
-        [self.calcTextField setText:@"Ошибка"];
-    } else {
-        [self.calcTextField setText:[@(currentCalculation) stringValue]];
-    }
-    calcState = MCDoneCalculation;
-    [currentOperationButton.layer setBorderWidth:0];
 }
 
 #pragma mark - textFormat
@@ -124,7 +43,7 @@ typedef enum {
     
     UITextView *textView = ((UITextView *)sender);
     
-    if ((calcState == MCReadOperationState || calcState == MCInitState || calcState == MCDoneCalculation) && textView.text.length > 0) {
+    if ((calc.calcState == MCReadOperationState || calc.calcState == MCInitState || calc.calcState == MCDoneCalculation) && textView.text.length > 0) {
         [textView setText:[textView.text substringWithRange:NSMakeRange(textView.text.length - 1, 1)]];
     }
     
@@ -143,12 +62,12 @@ typedef enum {
         [textView setText:[textView.text substringToIndex:textView.text.length - 1]];
     }
     
-    if (calcState == MCInitState || calcState == MCDoneCalculation) {
-        calcState = MCReadFirstNumberState;
+    if (calc.calcState == MCInitState || calc.calcState == MCDoneCalculation) {
+        calc.calcState = MCReadFirstNumberState;
         [self.clearButton setTitle:@"C" forState:UIControlStateNormal];
     }
-    if (calcState == MCReadOperationState) {
-        calcState = MCReadSecondNumberState;
+    if (calc.calcState == MCReadOperationState) {
+        calc.calcState = MCReadSecondNumberState;
         [self.clearButton setTitle:@"C" forState:UIControlStateNormal];
         if (currentOperationButton) {
             [currentOperationButton.layer setBorderWidth:0];
@@ -164,21 +83,23 @@ typedef enum {
 }
 
 - (IBAction)operationButtonClick:(id)sender {
-    if (calcState == MCReadSecondNumberState) {
-        [self actCalculation];
+    if (calc.calcState == MCReadSecondNumberState) {
+        [calc setSecondNumber:@([self.calcTextField.text doubleValue])];
+        [self.calcTextField setText:[calc actCalculation]];
+        [currentOperationButton.layer setBorderWidth:0];
     }
     if (currentOperationButton) {
         [currentOperationButton.layer setBorderWidth:0];
     }
-    currentOperation = (MCCalcOperations)((UIButton *)sender).tag;
+    calc.currentOperation = (MCCalcOperations)((UIButton *)sender).tag;
     if ([self.calcTextField.text isEqualToString:@"Ошибка"]) {
-        a = INFINITY;
+        [calc setFirstNumber:@(INFINITY)];
     } else {
-        a = [self.calcTextField.text doubleValue];
+        [calc setFirstNumber:@([self.calcTextField.text doubleValue])];
     }
     currentOperationButton = (UIButton *)sender;
     [currentOperationButton.layer setBorderWidth:2];
-    calcState = MCReadOperationState;
+    calc.calcState = MCReadOperationState;
 }
 
 - (IBAction)dotButtonClick:(id)sender {
@@ -189,24 +110,55 @@ typedef enum {
 - (IBAction)clearButtonClick:(id)sender {
     [self.calcTextField setText:@"0"];
     [currentOperationButton.layer setBorderWidth:0];
-    if (calcState == MCInitState) {
-        [self setInitState];
+    if (calc.calcState == MCInitState) {
+        [calc setInitState];
     }
     
-    if (calcState == MCReadFirstNumberState || calcState == MCDoneCalculation || calcState ==MCReadOperationState) {
-        calcState = MCInitState;
-        [self setInitState];
+    if (calc.calcState == MCDoneCalculation) {
+        calc.calcState = MCInitState;
+
     }
     
-    if (calcState == MCReadSecondNumberState) {
-        calcState = MCReadOperationState;
+    if (calc.calcState == MCReadFirstNumberState || calc.calcState == MCReadOperationState) {
+        calc.calcState = MCInitState;
+        [calc setInitState];
+    }
+    
+    if (calc.calcState == MCReadSecondNumberState) {
+        calc.calcState = MCReadOperationState;
         [currentOperationButton.layer setBorderWidth:2];
     }
     [self.clearButton setTitle:@"AC" forState:UIControlStateNormal];
 }
 
 - (IBAction)equalButtonClick:(id)sender {
-    [self actCalculation];
+        switch (calc.calcState) {
+            case MCReadSecondNumberState:
+                [calc setSecondNumber:@([self.calcTextField.text doubleValue])];
+                break;
+            case MCReadFirstNumberState: {
+                 [calc setFirstNumber:@([self.calcTextField.text doubleValue])];
+                break;
+            }
+            case MCReadOperationState: {
+                [calc setSecondNumber:@([self.calcTextField.text doubleValue])];
+                break;
+            }
+            case MCDoneCalculation: {
+                NSScanner *scanner = [NSScanner scannerWithString:self.calcTextField.text];
+                if ([scanner scanDouble:NULL] && [scanner isAtEnd]) {
+                    [calc setFirstNumber:@([self.calcTextField.text doubleValue])];
+                } else {
+                    [calc setFirstNumber:@(INFINITY)];
+                }
+                break;
+            }
+            default:
+                return;
+        }
+
+    [self.calcTextField setText:[calc actCalculation]];
+    [currentOperationButton.layer setBorderWidth:0];
 }
 
 - (IBAction)signButtonClick:(id)sender {
@@ -218,32 +170,33 @@ typedef enum {
 }
 
 - (IBAction)clearMemoryButtonClick:(id)sender {
-    memoryValue = 0;
+    [calc setMemoryValue:nil Operation:MCClearMemory];
 }
 
 - (IBAction)readMemoryButtonClick:(id)sender {
-    [self.calcTextField setText:@(memoryValue).stringValue];
+    [self.calcTextField setText:[calc getMemoryValue].stringValue];
 }
 
 - (IBAction)saveMemoryButtonClick:(id)sender {
-    if (fabs(currentCalculation) > DBL_MAX || [self.calcTextField.text isEqualToString:@"Ошибка"]) {
+    if (fabs([self.calcTextField.text doubleValue]) > DBL_MAX || [self.calcTextField.text isEqualToString:@"Ошибка"]) {
         return;
     }
-    memoryValue = [self.calcTextField.text doubleValue];
+    [calc setMemoryValue:@([self.calcTextField.text doubleValue]) Operation:MCSaveMomory];
 }
 
 - (IBAction)plusMemoryButtonClick:(id)sender {
-    if (fabs(currentCalculation) > DBL_MAX || [self.calcTextField.text isEqualToString:@"Ошибка"]) {
+    if (fabs([self.calcTextField.text doubleValue]) > DBL_MAX || [self.calcTextField.text isEqualToString:@"Ошибка"]) {
         return;
     }
-    memoryValue += [self.calcTextField.text doubleValue];
+    [calc setMemoryValue:@([self.calcTextField.text doubleValue]) Operation:MCPlusMemory];
 }
 
 - (IBAction)minusMemoryButtonClick:(id)sender {
-    if (fabs(currentCalculation) > DBL_MAX || [self.calcTextField.text isEqualToString:@"Ошибка"]) {
+    if (fabs([self.calcTextField.text doubleValue]) > DBL_MAX || [self.calcTextField.text isEqualToString:@"Ошибка"]) {
         return;
     }
-    memoryValue -= [self.calcTextField.text doubleValue];
+    [calc setMemoryValue:@([self.calcTextField.text doubleValue]) Operation:MCMinusMemory];
+
 }
 
 @end

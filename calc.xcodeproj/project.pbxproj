@@ -16,6 +16,7 @@
 		14B8C8DC1D391DFD009AFCAE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14B8C8DA1D391DFD009AFCAE /* LaunchScreen.storyboard */; };
 		14B8C8E71D391DFE009AFCAE /* calcTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 14B8C8E61D391DFE009AFCAE /* calcTests.m */; };
 		14B8C8F21D391DFE009AFCAE /* calcUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 14B8C8F11D391DFE009AFCAE /* calcUITests.m */; };
+		14F9F42F1DC8268C00346558 /* Calculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F9F42E1DC8268C00346558 /* Calculator.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,8 @@
 		14B8C8ED1D391DFE009AFCAE /* calcUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = calcUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		14B8C8F11D391DFE009AFCAE /* calcUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = calcUITests.m; sourceTree = "<group>"; };
 		14B8C8F31D391DFE009AFCAE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		14F9F42D1DC8268C00346558 /* Calculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Calculator.h; sourceTree = "<group>"; };
+		14F9F42E1DC8268C00346558 /* Calculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Calculator.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +121,8 @@
 				14B8C8D01D391DFD009AFCAE /* AppDelegate.m */,
 				14B8C8D21D391DFD009AFCAE /* ViewController.h */,
 				14B8C8D31D391DFD009AFCAE /* ViewController.m */,
+				14F9F42D1DC8268C00346558 /* Calculator.h */,
+				14F9F42E1DC8268C00346558 /* Calculator.m */,
 				14B8C8D51D391DFD009AFCAE /* Main.storyboard */,
 				14B8C8D81D391DFD009AFCAE /* Assets.xcassets */,
 				14B8C8DA1D391DFD009AFCAE /* LaunchScreen.storyboard */,
@@ -287,6 +292,7 @@
 				14B8C8D41D391DFD009AFCAE /* ViewController.m in Sources */,
 				14B8C8D11D391DFD009AFCAE /* AppDelegate.m in Sources */,
 				14B8C8CE1D391DFD009AFCAE /* main.m in Sources */,
+				14F9F42F1DC8268C00346558 /* Calculator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

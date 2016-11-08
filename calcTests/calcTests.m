@@ -7,6 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "Calculator.h"
 
 @interface calcTests : XCTestCase
 
@@ -24,16 +25,89 @@
     [super tearDown];
 }
 
-- (void)testExample {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
+#pragma mark - operationsTest
+
+- (void)testPlusOperation {
+    Calculator *calc = [Calculator new];
+    [calc setFirstNumber:@5];
+    [calc setSecondNumber:@7];
+    [calc setOperation:MCPlusOperation];
+    XCTAssertEqual([calc actCalculation].doubleValue, 14);
 }
 
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
+- (void)testMinusOperation {
+    Calculator *calc = [Calculator new];
+    [calc setFirstNumber:@(-58)];
+    [calc setSecondNumber:@7];
+    [calc setOperation:MCMinusOperation];
+    XCTAssertEqual([calc actCalculation].doubleValue, -65);
+}
+
+- (void)testMultOperation {
+    Calculator *calc = [Calculator new];
+    [calc setFirstNumber:@(-40)];
+    [calc setSecondNumber:@(-30)];
+    [calc setOperation:MCMultOperation];
+    XCTAssertEqual([calc actCalculation].doubleValue, 1200);
+}
+
+- (void)testDivOperation {
+    Calculator *calc = [Calculator new];
+    [calc setFirstNumber:@35];
+    [calc setSecondNumber:@7];
+    [calc setOperation:MCDivOperation];
+    XCTAssertEqual([calc actCalculation].doubleValue, 5);
+    
+    [calc setSecondNumber:@0];
+    XCTAssertEqualObjects([calc actCalculation], @"Ошибка");
+}
+
+- (void)testNoOpeartion {
+    Calculator *calc = [Calculator new];
+    [calc setFirstNumber:@35];
+    [calc setOperation:MCNoOperation];
+    XCTAssertEqual([calc actCalculation].doubleValue, 35);
+
+}
+
+#pragma mark - memoryTest
+
+- (void)testSetMemory {
+    Calculator *calc = [Calculator new];
+    [calc setMemoryValue:@777 Operation:MCSaveMomory];
+    XCTAssertEqualObjects([calc getMemoryValue], @777);
+}
+
+- (void)testPlusMemory {
+    Calculator *calc = [Calculator new];
+    [calc setMemoryValue:@777 Operation:MCSaveMomory];
+    [calc setMemoryValue:@333 Operation:MCPlusMemory];
+    XCTAssertEqualObjects([calc getMemoryValue], @1110);
+}
+
+- (void)testMinusMemory {
+    Calculator *calc = [Calculator new];
+    [calc setMemoryValue:@500 Operation:MCSaveMomory];
+    [calc setMemoryValue:@150 Operation:MCMinusMemory];
+    XCTAssertEqualObjects([calc getMemoryValue], @350);
+}
+
+- (void)testClearMemory {
+    Calculator *calc = [Calculator new];
+    [calc setMemoryValue:@500 Operation:MCSaveMomory];
+    [calc setMemoryValue:nil Operation:MCClearMemory];
+    XCTAssertEqualObjects([calc getMemoryValue], @0);
+}
+
+#pragma mark - overflow
+
+- (void)testOverflow {
+    Calculator *calc = [Calculator new];
+    [calc setFirstNumber:@(DBL_MAX-100)];
+    [calc setSecondNumber:@(DBL_MAX)];
+    [calc setOperation:MCPlusOperation];
+    XCTAssertEqualObjects([calc actCalculation], @"Ошибка");
+    
 }
 
 @end
